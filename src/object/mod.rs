@@ -67,5 +67,5 @@ pub use torus::Torus;
 pub use waves::Waves;
 pub use with_material::{WithMaterial, WithDynamicMaterial};
 pub use with_lights::{WithLights, WithLight};
-pub use transform::AffineTransform;
+pub use transform::*;
 pub use scene::Scene;

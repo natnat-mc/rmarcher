@@ -9,13 +9,12 @@ use crate::consts::*;
 use crate::structs::*;
 use crate::material::*;
 use image::{ColorType, ImageFormat};
-use image::codecs::png::FilterType::Sub;
 
 fn default_cam() -> Cam {
     Cam::new_pointing(Y*3. - X*5., O, 0.5)
 }
 
-fn default_scene() -> Scene {
+fn default_scene1() -> Scene {
     let s0 = WithMaterial::new(
         Sphere::new_xyz(0., 0., 0., 1.),
         RED
@@ -53,9 +52,21 @@ fn default_scene() -> Scene {
     Scene::new(scene)
 }
 
+fn default_scene2() -> Scene {
+    let s1 = Sphere::new_xyz(0., 0., 0., 1.);
+    let scaled = AffineTransform::new_linear(s1, scale(1.2));
+    let moved = AffineTransform::new_translate(scaled, Vec3::new(3., 1., 1.));
+    let sphere = WithMaterial::new(moved, BLUE);
+    let wall = WithMaterial::new(Plane::new_xyz(0., 0., -1., 2.5), GREEN);
+    let backwall = WithMaterial::new(Plane::new_xyz(-1., 0., 0., 3.), WHITE);
+    let mirror = WithMaterial::new(Plane::new_xyz(0., 1., 0., 2.), MIRROR);
+    let light = WithMaterial::new(Sphere::new_xyz(-1., 1.5, 1., 0.5), LIGHTSOURCE);
+    Scene::new(Union::new(Union::new(sphere, Union::new(wall, backwall)), Union::new(light, mirror)))
+}
+
 fn main() {
     // get scene and camera
-    let scene = default_scene();
+    let scene = default_scene2();
     let cam = default_cam();
 
     // get stats on the scene we're about to render

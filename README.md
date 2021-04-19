@@ -24,6 +24,7 @@ A ray marching renderer in rust
 
 ## Examples
 ![1st test scene](prod/1.png)
+![2nd test scene](prod/2.png)
 
 ## License
 MIT
