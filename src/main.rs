@@ -9,6 +9,7 @@ use crate::consts::*;
 use crate::structs::*;
 use crate::material::*;
 use image::{ColorType, ImageFormat};
+use crate::light::Light;
 
 fn default_cam() -> Cam {
     Cam::new_pointing(Y*3. - X*5., O, 0.5)
@@ -62,6 +63,23 @@ fn default_scene2() -> Scene {
     let mirror = WithMaterial::new(Plane::new_xyz(0., 1., 0., 2.), MIRROR);
     let light = WithMaterial::new(Sphere::new_xyz(-1., 1.5, 1., 0.5), LIGHTSOURCE);
     Scene::new(Union::new(Union::new(sphere, Union::new(wall, backwall)), Union::new(light, mirror)))
+}
+
+fn default_scene3() -> Scene {
+    //TODO fix this scene
+    let s1 = WithMaterial::new(Sphere::new_xyz(4., 0., 0., 1.), WHITE);
+    let s2 = WithMaterial::new(Sphere::new_xyz(3., 1., 1., 0.5), GREEN);
+    let navion = WithMaterial::new(Plane::new_xyz(0., 1., -1., 3.), BLUE);
+    let backwall = WithMaterial::new(Plane::new_xyz(-1., -1., -0.5, 8.), RED);
+    let boiboite = Cuboid::new_xyz(4., 1.1, -1.1, 0.5, 0.275, 0.275);
+    let decal = AffineTransform::new_translate(boiboite, Vec3::new(-0.25, 0., 0.5));
+    let nope = Exclusion::new(s1, Sphere::new_xyz(3.75, 0.75, 0.75, 1.));
+    let walls = Union::new(navion, backwall);
+    let spheres = Union::new(AffineTransform::new_linear(nope, scale(0.75)), s2);
+    let scene = Union::new(spheres, Union::new(walls, decal));
+    let light = WithMaterial::new(Plane::new_xyz(0., -1., 0., 8.), BRIGHT_AF_LIGHTSOURCE);
+    let scene = WithLight::new_one(scene, Light::new(Y*3.-X*5., ColorVec::new([2., 3., 4., 0.])));
+    Scene::new(Union::new(scene, light))
 }
 
 fn main() {

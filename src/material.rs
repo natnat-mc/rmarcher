@@ -71,6 +71,12 @@ pub const STRONG_LIGHTSOURCE: Material = Material::new_from_diagonal(
     Stop
 );
 
+pub const BRIGHT_AF_LIGHTSOURCE: Material = Material::new_from_diagonal(
+    ColorVec::new([25., 25., 25., 0.]),
+    COLOR_ZERO,
+    Stop
+);
+
 pub const UV_LIGHTSOURCE: Material = Material::new_from_diagonal(
     ColorVec::new_one(3),
     ColorVec::new([0.25, 0.25, 0.25, 1.]),

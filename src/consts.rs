@@ -4,8 +4,10 @@ pub const COLOR_CHANNELS: usize = 4;
 
 pub const EPSILON: f64 = 1. / 1024.;
 pub const LIGHT_EPSILON: f64 = 1. / 512.;
-pub const MAX_DIST: f64 = 16.;
+//pub const MAX_DIST: f64 = 16.;
+pub const MAX_DIST: f64 = 32.;
 pub const MAX_STEPS: u32 = 1024;
+//pub const MAX_STEPS: u32 = u32::MAX;
 
 pub const DIST_FIX_CORRECTION: f64 = 0.5;
 pub const DIST_CORRECTION: f64 = 3.;
@@ -35,8 +37,10 @@ pub const RAYS_PER_PIXEL: usize = 500;
 //pub const MAX_BOUNCES: u32 = 8;
 pub const MAX_BOUNCES: u32 = 10;
 
+//pub const THREAD_COUNT: usize = 1;
 pub const THREAD_COUNT: usize = 12;
-pub const SLICES_PER_THREAD: usize = 4;
+pub const SLICES_PER_THREAD: usize = 16;
+pub const REPORT_STATUS: bool = true;
 
 pub const UP: Vec3 = Y;
 pub const RIGHT: Vec3 = X;

@@ -20,13 +20,6 @@ impl<A: Obj, B: Obj> Obj for Intersection<A, B> {
     fn distance_to(&self, point: Vec3) -> f64 {
         f64::max(self.a.distance_to(point), self.b.distance_to(point))
     }
-    fn normal_at(&self, point: Vec3) -> Vec3 {
-        if self.a.distance_to(point) > self.b.distance_to(point) {
-            self.a.normal_at(point)
-        } else {
-            self.b.normal_at(point)
-        }
-    }
     fn material_at(&self, point: Vec3) -> Material {
         if self.a.distance_to(point) > self.b.distance_to(point) {
             self.a.material_at(point)

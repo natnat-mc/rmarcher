@@ -63,7 +63,7 @@ impl<T: Obj + Clone> Obj for AffineTransform<T> {
         self.obj.distance_to(self.apply_rev(point))
     }
     fn normal_at(&self, point: Vec3) -> Vec3 {
-        self.apply_fwd(self.obj.normal_at(self.apply_rev(point)))
+        self.apply_fwd(self.obj.normal_at(self.apply_rev(point))).unit()
     }
     fn material_at(&self, point: Vec3) -> Material {
         self.obj.material_at(self.apply_rev(point))
