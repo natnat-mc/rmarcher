@@ -7,6 +7,7 @@ use std::f64::consts::PI;
 use rand::prelude::*;
 use crossbeam_channel::unbounded;
 use std::ops::{Mul, Add, Sub};
+use std::io::Write;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Cam {
@@ -99,10 +100,10 @@ fn shoot_ray_at<T: Obj>(scene: &T, pos: Vec3, dest: Vec3) -> bool {
         let point = ray.point(dist);
         let sd = scene.distance_to(point);
         let dd = dest.distance_to(point);
-        if sd < 0. {
+        if sd <= 0. {
             return false;
         }
-        if dd < sd {
+        if dd <= sd {
             return true;
         }
         dist += if sd < EPSILON { EPSILON } else { sd };
@@ -121,6 +122,12 @@ impl Cam {
     }
 
     pub fn render_singlethreaded<T: Obj>(&self, scene: &T) -> Image {
+        let mut stderr = std::io::stderr();
+        if REPORT_STATUS {
+            stderr.write_all(format!("Rendering... 0/{} rows (0.00%)", IMG_HEIGHT).as_bytes()).unwrap();
+            stderr.flush();
+        }
+
         let lights = scene.get_lights();
         let mut pixels = [0; IMG_BYTE_SIZE];
         for y in 0..IMG_HEIGHT {
@@ -128,7 +135,18 @@ impl Cam {
                 let field_pos = (x + y*IMG_WIDTH) * 3;
                 self.render_single(scene, &lights, x, y, &mut pixels[field_pos..(field_pos+3)]);
             }
+
+            if REPORT_STATUS {
+                stderr.write_all(format!("\x1b[1K\x1b[GRendering... {}/{} rows ({:.2}%)", y+1, IMG_HEIGHT, (y+1) as f64/IMG_HEIGHT as f64).as_bytes());
+                stderr.flush();
+            }
         }
+
+        if REPORT_STATUS {
+            stderr.write_all(format!("\x1b[1K\x1b[GRendering... Done\n").as_bytes());
+            stderr.flush();
+        }
+
         pixels
     }
 
@@ -176,6 +194,7 @@ impl Cam {
             drop(data_tx);
 
             // send the slice data
+            let mut total_slices = 0u32;
             let mut y = 0;
             while y < IMG_HEIGHT {
                 let mut x = 0;
@@ -184,12 +203,23 @@ impl Cam {
                     let h = usize::min(slice_height, IMG_HEIGHT - y);
                     slice_tx.send(Slice { x, y, w, h }).unwrap();
                     x += slice_width;
+
+                    if REPORT_STATUS {
+                        total_slices += 1;
+                    }
                 }
                 y += slice_height;
             }
             drop(slice_tx);
 
             // merge stuff as we get it
+            let mut stderr = std::io::stderr();
+            if REPORT_STATUS {
+                stderr.write_all(format!("Rendering... 0/{} slices (0.00%), 0.00% pixels", total_slices).as_bytes()).unwrap();
+                stderr.flush();
+            }
+            let mut rendered_slices = 0u32;
+            let mut rendered_pixels = 0u64;
             for (slice, data) in data_rx {
                 let data = data.as_slice();
                 for sy in 0..slice.h {
@@ -204,6 +234,19 @@ impl Cam {
                         pixels[pi + 2] = data[si + 2];
                     }
                 }
+
+                if REPORT_STATUS {
+                    rendered_slices += 1;
+                    rendered_pixels += (slice.w*slice.h) as u64;
+                    let pct_slices = rendered_slices as f64 / total_slices as f64 * 100.;
+                    let pct_pixels = rendered_pixels as f64 / (IMG_WIDTH * IMG_HEIGHT) as f64 * 100.;
+                    stderr.write_all(format!("\x1b[1K\x1b[GRendering... {}/{} slices ({:.02}%), {:.02}% pixels", rendered_slices, total_slices, pct_slices, pct_pixels).as_bytes()).unwrap();
+                    stderr.flush();
+                }
+            }
+            if REPORT_STATUS {
+                stderr.write_all(format!("\x1b[1K\x1b[GRendering... Done\n").as_bytes());
+                stderr.flush();
             }
         }).unwrap();
 
@@ -269,7 +312,7 @@ impl Cam {
             match hit {
                 Some(hit) => {
                     i += 1;
-                    pos = hit.pos - dir * EPSILON;
+                    pos = hit.pos + (hit.normal - dir) * EPSILON;
                     match hit.material.surface() {
                         SurfaceType::Stop => break,
                         SurfaceType::Diffuse => {
@@ -281,11 +324,7 @@ impl Cam {
                             let x = r1.cos()*r2.sqrt();
                             let y = r1.sin()*r2.sqrt();
                             let z = (1.-r2).sqrt();
-                            if w.x().abs() < 0.5 {
-                                dir = (u*x + v*y + w*z).unit();
-                            } else {
-                                dir = (u*x + v*y + w*z).unit();
-                            }
+                            dir = (u*x + v*y + w*z).unit();
                         },
                         SurfaceType::Reflective => {
                             dir = dir - hit.normal * (hit.normal * dir) * 2.;

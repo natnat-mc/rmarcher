@@ -9,6 +9,7 @@ mod sphere;
 mod plane;
 mod union;
 mod intersection;
+mod exclusion;
 mod cuboid;
 mod cylinder;
 mod torus;
@@ -36,7 +37,9 @@ pub trait Obj: Send + Sync {
     fn get_lights(&self) -> Vec<Light> {
         Vec::new()
     }
-    fn node_count(&self) -> u32 { 1 }
+    fn node_count(&self) -> u32 {
+        1
+    }
 }
 
 impl<T: Obj> Obj for &T {
@@ -61,6 +64,7 @@ pub use sphere::Sphere;
 pub use plane::Plane;
 pub use union::Union;
 pub use intersection::Intersection;
+pub use exclusion::Exclusion;
 pub use cuboid::Cuboid;
 pub use cylinder::Cylinder;
 pub use torus::Torus;
