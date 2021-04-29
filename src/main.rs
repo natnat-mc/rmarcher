@@ -3,6 +3,7 @@ mod light;
 mod object;
 mod structs;
 mod consts;
+mod lua;
 
 use object::*;
 use crate::consts::*;
@@ -10,6 +11,7 @@ use crate::structs::*;
 use crate::material::*;
 use image::{ColorType, ImageFormat};
 use crate::light::Light;
+use crate::lua::scene_from_file;
 
 fn default_cam() -> Cam {
     Cam::new_pointing(Y*3. - X*5., O, 0.5)
@@ -84,7 +86,7 @@ fn default_scene3() -> Scene {
 
 fn main() {
     // get scene and camera
-    let scene = default_scene2();
+    let scene = scene_from_file("scenes/randomspheres.lua".to_owned()).unwrap();
     let cam = default_cam();
 
     // get stats on the scene we're about to render

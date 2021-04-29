@@ -22,7 +22,7 @@ impl<T: Obj> Obj for WithMaterial<T> {
     fn normal_at(&self, point: Vec3) -> Vec3 {
         self.obj.normal_at(point)
     }
-    fn material_at(&self, point: Vec3) -> Material {
+    fn material_at(&self, _point: Vec3) -> Material {
         self.material
     }
     fn get_lights(&self) -> Vec<Light> {

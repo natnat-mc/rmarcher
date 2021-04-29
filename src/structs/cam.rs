@@ -6,7 +6,6 @@ use crate::light::Light;
 use std::f64::consts::PI;
 use rand::prelude::*;
 use crossbeam_channel::unbounded;
-use std::ops::{Mul, Add, Sub};
 use std::io::Write;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -125,7 +124,7 @@ impl Cam {
         let mut stderr = std::io::stderr();
         if REPORT_STATUS {
             stderr.write_all(format!("Rendering... 0/{} rows (0.00%)", IMG_HEIGHT).as_bytes()).unwrap();
-            stderr.flush();
+            stderr.flush().unwrap();
         }
 
         let lights = scene.get_lights();
@@ -137,14 +136,14 @@ impl Cam {
             }
 
             if REPORT_STATUS {
-                stderr.write_all(format!("\x1b[1K\x1b[GRendering... {}/{} rows ({:.2}%)", y+1, IMG_HEIGHT, (y+1) as f64/IMG_HEIGHT as f64).as_bytes());
-                stderr.flush();
+                stderr.write_all(format!("\x1b[1K\x1b[GRendering... {}/{} rows ({:.2}%)", y+1, IMG_HEIGHT, (y+1) as f64/IMG_HEIGHT as f64).as_bytes()).unwrap();
+                stderr.flush().unwrap();
             }
         }
 
         if REPORT_STATUS {
-            stderr.write_all(format!("\x1b[1K\x1b[GRendering... Done\n").as_bytes());
-            stderr.flush();
+            stderr.write_all(format!("\x1b[1K\x1b[GRendering... Done\n").as_bytes()).unwrap();
+            stderr.flush().unwrap();
         }
 
         pixels
@@ -216,7 +215,7 @@ impl Cam {
             let mut stderr = std::io::stderr();
             if REPORT_STATUS {
                 stderr.write_all(format!("Rendering... 0/{} slices (0.00%), 0.00% pixels", total_slices).as_bytes()).unwrap();
-                stderr.flush();
+                stderr.flush().unwrap();
             }
             let mut rendered_slices = 0u32;
             let mut rendered_pixels = 0u64;
@@ -241,12 +240,12 @@ impl Cam {
                     let pct_slices = rendered_slices as f64 / total_slices as f64 * 100.;
                     let pct_pixels = rendered_pixels as f64 / (IMG_WIDTH * IMG_HEIGHT) as f64 * 100.;
                     stderr.write_all(format!("\x1b[1K\x1b[GRendering... {}/{} slices ({:.02}%), {:.02}% pixels", rendered_slices, total_slices, pct_slices, pct_pixels).as_bytes()).unwrap();
-                    stderr.flush();
+                    stderr.flush().unwrap();
                 }
             }
             if REPORT_STATUS {
-                stderr.write_all(format!("\x1b[1K\x1b[GRendering... Done\n").as_bytes());
-                stderr.flush();
+                stderr.write_all(format!("\x1b[1K\x1b[GRendering... Done\n").as_bytes()).unwrap();
+                stderr.flush().unwrap();
             }
         }).unwrap();
 
