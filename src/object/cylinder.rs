@@ -15,9 +15,9 @@ impl Cylinder {
 
 impl Obj for Cylinder {
     fn distance_to(&self, point: Vec3) -> f64 {
-        Vec3::new(self.center.x(), 0., self.center.z()).distance_to(point) - self.radius
+        Vec3::new(self.center.x(), point.y(), self.center.z()).distance_to(point) - self.radius
     }
     fn normal_at(&self, point: Vec3) -> Vec3 {
-        point - Vec3::new(self.center.x(), 0.,self.center.z())
+        point - Vec3::new(self.center.x(), point.y(),self.center.z())
     }
 }

@@ -11,7 +11,7 @@ A ray marching renderer in rust
 - `rlua` for lua scene building
 
 ## What currently works
-- Simple shapes (half-spaces and spheres are the only tested ones so far)
+- Simple shapes (half-spaces, spheres, cylinders and torus are the only tested ones so far)
 - Spectral simulation (currently using 4 color components)
 - Global illumination (with diffuse and reflective surfaces)
 - Punctual illumination
@@ -28,6 +28,7 @@ A ray marching renderer in rust
 ![1st test scene](prod/1.png)
 ![2nd test scene](prod/2.png)
 ![randomly generated spheres](prod/randomspheres.png)
+![randomly generated objects](prod/smolgalaxy.png)
 
 ## License
 MIT
