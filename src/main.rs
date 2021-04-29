@@ -86,7 +86,7 @@ fn default_scene3() -> Scene {
 
 fn main() {
     // get scene and camera
-    let scene = scene_from_file("scenes/randomspheres.lua".to_owned()).unwrap();
+    let scene = scene_from_file("scenes/smolgalaxy.lua".to_owned()).unwrap();
     let cam = default_cam();
 
     // get stats on the scene we're about to render
