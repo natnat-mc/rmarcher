@@ -1,5 +1,5 @@
 use crate::consts::{EPSILON, MAX_DIST};
-use crate::structs::{Vec3, O, X, Y, Z};
+use crate::structs::{Vec3, X, Y, Z};
 use crate::material::Material;
 use crate::material;
 use crate::light::Light;
