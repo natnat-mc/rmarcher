@@ -4,7 +4,7 @@ use rlua::{UserData, Context, Table};
 impl UserData for SurfaceType {}
 impl UserData for Material {}
 
-pub fn surface_type(ctx: Context, _: ()) -> rlua::Result<Table> {
+pub fn surface_type<'lua>(ctx: Context<'lua>, _env: Table<'lua>) -> rlua::Result<Table<'lua>> {
     let module = ctx.create_table()?;
 
     module.set("DIFFUSE", SurfaceType::Diffuse)?;
@@ -14,7 +14,7 @@ pub fn surface_type(ctx: Context, _: ()) -> rlua::Result<Table> {
     Ok(module)
 }
 
-pub fn material(ctx: Context, _: ()) -> rlua::Result<Table> {
+pub fn material<'lua>(ctx: Context<'lua>, _env: Table<'lua>) -> rlua::Result<Table<'lua>> {
     let module = ctx.create_table()?;
 
     module.set("new", ctx.create_function(

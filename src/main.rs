@@ -68,8 +68,7 @@ fn default_scene2() -> Scene {
 }
 
 fn default_scene3() -> Scene {
-    //TODO fix this scene
-    let s1 = WithMaterial::new(Sphere::new_xyz(4., 0., 0., 1.), WHITE);
+    let s1 = WithMaterial::new(Sphere::new_xyz(4., 0., 0., 1.), MIRROR);
     let s2 = WithMaterial::new(Sphere::new_xyz(3., 1., 1., 0.5), GREEN);
     let navion = WithMaterial::new(Plane::new_xyz(0., 1., -1., 3.), BLUE);
     let backwall = WithMaterial::new(Plane::new_xyz(-1., -1., -0.5, 8.), RED);
@@ -86,7 +85,8 @@ fn default_scene3() -> Scene {
 
 fn main() {
     // get scene and camera
-    let scene = scene_from_file("scenes/smolgalaxy.lua".to_owned()).unwrap();
+    //let scene = scene_from_file("scenes/randomspheres.lua".to_owned()).unwrap();
+    let scene = default_scene3();
     let cam = default_cam();
 
     // get stats on the scene we're about to render

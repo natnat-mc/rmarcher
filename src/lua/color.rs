@@ -4,7 +4,7 @@ use rlua::{UserData, Context, Table};
 impl UserData for ColorVec {}
 impl UserData for ColorMat {}
 
-pub fn color_vec(ctx: Context, _: ()) -> rlua::Result<Table> {
+pub fn color_vec<'lua>(ctx: Context<'lua>, _env: Table<'lua>) -> rlua::Result<Table<'lua>> {
     let module = ctx.create_table()?;
 
     module.set("new", ctx.create_function(
@@ -16,7 +16,7 @@ pub fn color_vec(ctx: Context, _: ()) -> rlua::Result<Table> {
     Ok(module)
 }
 
-pub fn color_mat(ctx: Context, _: ()) -> rlua::Result<Table> {
+pub fn color_mat<'lua>(ctx: Context<'lua>, _env: Table<'lua>) -> rlua::Result<Table<'lua>> {
     let module = ctx.create_table()?;
 
     module.set("new", ctx.create_function(

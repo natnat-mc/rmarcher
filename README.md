@@ -19,7 +19,6 @@ A ray marching renderer in rust
 
 ## What is planned
 - Testing of more shapes
-- Support for a lua-based scene representation DSL
 - Support for controlling the whole application from lua
 - Support for linking against a `scene.so` exporting a scene
 - Support for using as a library
@@ -27,6 +26,7 @@ A ray marching renderer in rust
 ## Examples
 ![1st test scene](prod/1.png)
 ![2nd test scene](prod/2.png)
+![3rd test scene](prod/3.png)
 ![randomly generated spheres](prod/randomspheres.png)
 ![randomly generated objects](prod/smolgalaxy.png)
 

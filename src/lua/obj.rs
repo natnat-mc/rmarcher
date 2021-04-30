@@ -27,7 +27,7 @@ impl Obj for LuaObject {
 
 impl UserData for LuaObject {}
 
-pub fn obj(ctx: Context, _: ()) -> rlua::Result<Table> {
+pub fn obj<'lua>(ctx: Context<'lua>, _env: Table<'lua>) -> rlua::Result<Table<'lua>> {
     let module = ctx.create_table()?;
 
     module.set("cuboid", ctx.create_function(
@@ -70,8 +70,12 @@ pub fn obj(ctx: Context, _: ()) -> rlua::Result<Table> {
         |ctx, ()| LuaObject::new(Waves::new())
     )?)?;
 
-    module.set("withlights", ctx.create_function(
+    module.set("withlight", ctx.create_function(
         |ctx, (obj, light): (LuaObject, Light)| LuaObject::new(WithLights::new_one(obj.get(), light))
+    )?)?;
+
+    module.set("withlights", ctx.create_function(
+        |ctx, (obj, lights): (LuaObject, Vec<Light>)| LuaObject::new(WithAnyLights::new(obj.get(), lights))
     )?)?;
 
     module.set("withmaterial", ctx.create_function(
