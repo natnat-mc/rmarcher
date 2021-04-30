@@ -46,6 +46,10 @@ pub fn obj<'lua>(ctx: Context<'lua>, _env: Table<'lua>) -> rlua::Result<Table<'l
         |ctx, (a, b): (LuaObject, LuaObject)| LuaObject::new(Intersection::new(a.get(), b.get()))
     )?)?;
 
+    module.set("negation", ctx.create_function(
+        |ctx, obj: LuaObject| LuaObject::new(Negation::new(obj.get()))
+    )?)?;
+
     module.set("plane", ctx.create_function(
         |ctx, (normal, offset): (Vec3, f64)| LuaObject::new(Plane::new(normal, offset))
     )?)?;

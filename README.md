@@ -29,6 +29,7 @@ A ray marching renderer in rust
 ![3rd test scene](prod/3.png)
 ![randomly generated spheres](prod/randomspheres.png)
 ![randomly generated objects](prod/smolgalaxy.png)
+![inside a spherical mirror](prod/insidemirror.png)
 
 ## License
 MIT

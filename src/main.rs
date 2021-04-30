@@ -85,8 +85,8 @@ fn default_scene3() -> Scene {
 
 fn main() {
     // get scene and camera
-    //let scene = scene_from_file("scenes/randomspheres.lua".to_owned()).unwrap();
-    let scene = default_scene3();
+    let scene = scene_from_file("scenes/insidemirror.lua".to_owned()).unwrap();
+    //let scene = default_scene3();
     let cam = default_cam();
 
     // get stats on the scene we're about to render
