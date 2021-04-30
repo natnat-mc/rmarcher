@@ -24,7 +24,7 @@ impl UserData for Vec3 {
     }
 }
 
-pub fn vec3(ctx: Context, _: ()) -> rlua::Result<Table> {
+pub fn vec3<'lua>(ctx: Context<'lua>, _env: Table<'lua>) -> rlua::Result<Table<'lua>> {
     let module = ctx.create_table()?;
 
     module.set("new", ctx.create_function(

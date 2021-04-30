@@ -8,18 +8,19 @@ pub struct AffineTransform<T: Obj + Clone> {
     obj: T,
     transform: Mat3,
     transform_inv: Mat3,
-    translate: Vec3
+    translate: Vec3,
+    scale: f64
 }
 
 impl<T: Obj + Clone> AffineTransform<T> {
     pub fn new(obj: T, transform: Mat3, translate: Vec3) -> AffineTransform<T> {
-        AffineTransform { obj, transform, transform_inv: transform.invert(), translate }
+        AffineTransform { obj, transform, transform_inv: transform.invert(), translate, scale: transform.det().cbrt() }
     }
     pub fn new_linear(obj: T, transform: Mat3) -> AffineTransform<T> {
-        AffineTransform { obj, transform, transform_inv: transform.invert(), translate: O }
+        AffineTransform { obj, transform, transform_inv: transform.invert(), translate: O, scale: transform.det().cbrt() }
     }
     pub fn new_translate(obj: T, translate: Vec3) -> AffineTransform<T> {
-        AffineTransform { obj, transform: I3, transform_inv: I3, translate }
+        AffineTransform { obj, transform: I3, transform_inv: I3, translate, scale: 1. }
     }
 
     fn apply_rev(&self, point: Vec3) -> Vec3 {
@@ -60,7 +61,7 @@ pub const fn scale_z(k: f64) -> Mat3 { scale_xyz(1., 1., k) }
 
 impl<T: Obj + Clone> Obj for AffineTransform<T> {
     fn distance_to(&self, point: Vec3) -> f64 {
-        self.obj.distance_to(self.apply_rev(point))
+        self.obj.distance_to(self.apply_rev(point)) * self.scale
     }
     fn normal_at(&self, point: Vec3) -> Vec3 {
         self.apply_fwd(self.obj.normal_at(self.apply_rev(point))).unit()

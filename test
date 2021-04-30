@@ -2,6 +2,6 @@
 clear
 cargo build --release && \
 	clear && \
-	time target/release/rmarcher && \
+	time SEED=0 target/release/rmarcher && \
 	printf '\n' && \
 	kitty +kitten icat --align=left a.png

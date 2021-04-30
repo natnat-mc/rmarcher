@@ -70,6 +70,6 @@ pub use cylinder::Cylinder;
 pub use torus::Torus;
 pub use waves::Waves;
 pub use with_material::{WithMaterial, WithDynamicMaterial};
-pub use with_lights::{WithLights, WithLight};
+pub use with_lights::{WithLights, WithLight, WithAnyLights};
 pub use transform::*;
 pub use scene::Scene;

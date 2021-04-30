@@ -42,3 +42,39 @@ impl<T: Obj> WithLight<T> {
         WithLight { obj, lights: [light; 1] }
     }
 }
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct WithAnyLights<T: Obj> {
+    obj: T,
+    lights: Vec<Light>
+}
+
+impl<T: Obj> WithAnyLights<T> {
+    pub fn new(obj: T, lights: Vec<Light>) -> WithAnyLights<T> {
+        WithAnyLights { obj, lights }
+    }
+
+    pub fn add_light(&mut self, light: Light) {
+        self.lights.push(light)
+    }
+}
+
+impl<T: Obj> Obj for WithAnyLights<T> {
+    fn distance_to(&self, point: Vec3) -> f64 {
+        self.obj.distance_to(point)
+    }
+    fn normal_at(&self, point: Vec3) -> Vec3 {
+        self.obj.normal_at(point)
+    }
+    fn material_at(&self, point: Vec3) -> Material {
+        self.obj.material_at(point)
+    }
+    fn get_lights(&self) -> Vec<Light> {
+        let mut l = self.obj.get_lights();
+        l.extend(&self.lights);
+        l
+    }
+    fn node_count(&self) -> u32 {
+        self.obj.node_count() + 1
+    }
+}
