@@ -56,7 +56,7 @@ struct Slice {
 
 type CastData = [Option<RayData>; MAX_BOUNCES as usize];
 const NONE_CAST_DATA: CastData = [None; MAX_BOUNCES as usize];
-pub type Image = [u8; IMG_BYTE_SIZE];
+pub type Image = Vec<u8>;
 
 fn l2s(l: f64) -> u8 {
     (f64::powf(f64::clamp(l, 0., 1.), 1./2.2) * 255. + 0.5) as u8
@@ -128,7 +128,8 @@ impl Cam {
         }
 
         let lights = scene.get_lights();
-        let mut pixels = [0; IMG_BYTE_SIZE];
+        let mut pixels = Vec::with_capacity(IMG_BYTE_SIZE);
+        pixels.resize(IMG_BYTE_SIZE, 0u8);
         for y in 0..IMG_HEIGHT {
             for x in 0..IMG_WIDTH {
                 let field_pos = (x + y*IMG_WIDTH) * 3;
@@ -136,7 +137,7 @@ impl Cam {
             }
 
             if REPORT_STATUS {
-                stderr.write_all(format!("\x1b[1K\x1b[GRendering... {}/{} rows ({:.2}%)", y+1, IMG_HEIGHT, (y+1) as f64/IMG_HEIGHT as f64).as_bytes()).unwrap();
+                stderr.write_all(format!("\x1b[1K\x1b[GRendering... {}/{} rows ({:.2}%)", y+1, IMG_HEIGHT, (y+1) as f64*100./IMG_HEIGHT as f64).as_bytes()).unwrap();
                 stderr.flush().unwrap();
             }
         }
@@ -150,7 +151,8 @@ impl Cam {
     }
 
     pub fn render_multithreaded<T: Obj + Clone>(&self, scene: &T) -> Image {
-        let mut pixels = [0; IMG_BYTE_SIZE];
+        let mut pixels = Vec::with_capacity(IMG_BYTE_SIZE);
+        pixels.resize(IMG_BYTE_SIZE, 0u8);
 
         crossbeam::scope(|scope| {
             // initialize everything for render
