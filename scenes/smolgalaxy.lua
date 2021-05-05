@@ -70,7 +70,7 @@ local function randomtorus()
 	local thickness = util.randab(radius/4, radius)
 	local orientation = randomorientation()
 
-	return obj.affinetransform(obj.torus(pos, radius, thickness), orientation, vec3.O)
+	return util.transform(obj.torus(pos, radius, thickness), orientation)
 end
 
 local function randomcuboid()
@@ -86,13 +86,12 @@ local function randomcylinder()
 	local height = util.randab(0, SCALE)
 	local orientation = randomorientation()
 
-	return obj.affinetransform(
+	return util.transform(
 		obj.intersection(
 			obj.cylinder(pos, radius),
 			obj.cuboid(pos, vec3.new(radius, height, radius))
 		),
-		orientation,
-		vec3.O
+		orientation
 	)
 end
 

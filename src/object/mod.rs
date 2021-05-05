@@ -8,6 +8,7 @@ use std::vec::Vec;
 mod sphere;
 mod plane;
 mod union;
+mod smoothunion;
 mod intersection;
 mod exclusion;
 mod negation;
@@ -64,6 +65,7 @@ impl<T: 'static + Obj + Clone> ObjClone for T {
 pub use sphere::Sphere;
 pub use plane::Plane;
 pub use union::Union;
+pub use smoothunion::SmoothUnion;
 pub use intersection::Intersection;
 pub use exclusion::Exclusion;
 pub use negation::Negation;

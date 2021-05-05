@@ -7,7 +7,7 @@ impl UserData for Mat3 {
         methods.add_meta_method(MetaMethod::Sub, |ctx, a: &Self, b: Self| Ok(*a-b));
         methods.add_meta_method(MetaMethod::Mul, |ctx, a: &Self, b: Self| Ok(*a*b));
         methods.add_meta_method(MetaMethod::Unm, |ctx, a: &Self, b: ()| Ok(-*a));
-        methods.add_meta_method(MetaMethod::Mul, |ctx, a: &Self, b: f64| Ok(*a*b));
+        //methods.add_meta_method(MetaMethod::Mul, |ctx, a: &Self, b: f64| Ok(*a*b)); //TODO find a way to make it cohabit
         methods.add_meta_method(MetaMethod::Div, |ctx, a: &Self, b: f64| Ok(*a/b));
 
         methods.add_method("a", |ctx, x, ()| Ok(x.a()));

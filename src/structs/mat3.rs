@@ -137,7 +137,7 @@ impl Mul<Mat3> for Mat3 {
 
             d: self.d*other.a + self.e*other.d + self.f*other.g,
             e: self.d*other.b + self.e*other.e + self.f*other.h,
-            f: self.d*other.c + self.e*other.f + self.e*other.i,
+            f: self.d*other.c + self.e*other.f + self.f*other.i,
 
             g: self.g*other.a + self.h*other.d + self.i*other.g,
             h: self.g*other.b + self.h*other.e + self.i*other.h,
