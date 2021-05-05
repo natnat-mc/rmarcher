@@ -65,7 +65,7 @@ function M.transform(object, mat)
 	return obj.affinetransform(object, mat, vec3.O)
 end
 function M.translate(object, vec)
-	return obj.affinetransform(object, mat3.O, vec)
+	return obj.affinetransform(object, mat3.I, vec)
 end
 
 return M

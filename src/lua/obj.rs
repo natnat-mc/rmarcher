@@ -54,6 +54,10 @@ pub fn obj<'lua>(ctx: Context<'lua>, _env: Table<'lua>) -> rlua::Result<Table<'l
         |ctx, (normal, offset): (Vec3, f64)| LuaObject::new(Plane::new(normal, offset))
     )?)?;
 
+    module.set("smoothunion", ctx.create_function(
+        |ctx, (a, b, r): (LuaObject, LuaObject, f64)| LuaObject::new(SmoothUnion::new(a.get(), b.get(), r))
+    )?)?;
+
     module.set("sphere", ctx.create_function(
         |ctx, (pos, radius): (Vec3, f64)| LuaObject::new(Sphere::new(pos, radius))
     )?)?;
@@ -64,6 +68,10 @@ pub fn obj<'lua>(ctx: Context<'lua>, _env: Table<'lua>) -> rlua::Result<Table<'l
 
     module.set("affinetransform", ctx.create_function(
         |ctx, (obj, trans, disp): (LuaObject, Mat3, Vec3)| LuaObject::new(AffineTransform::new(obj.get(), trans, disp))
+    )?)?;
+
+    module.set("transformaround", ctx.create_function(
+        |ctx, (obj, trans, center): (LuaObject, Mat3, Vec3)| LuaObject::new(TransformAround::new(obj.get(), trans, center))
     )?)?;
 
     module.set("union", ctx.create_function(

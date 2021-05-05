@@ -1,7 +1,8 @@
 #!/bin/bash
+[ -z "$SEED" ] && export SEED=0
 clear
 cargo build --release && \
 	clear && \
-	time SEED=0 target/release/rmarcher && \
+	time target/release/rmarcher && \
 	printf '\n' && \
 	kitty +kitten icat --align=left a.png
